@@ -1,14 +1,17 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link, useParams, useLocation } from 'react-router-dom';
 
-export default function Movies() {
+export default function OneGenre() {
+  const { id } = useParams();
+
   const [movies, setMovies] = useState([]);
+  const [genre, setGenre] = useState({ genre_name: '' });
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:4000/v1/movies');
+      const response = await fetch(`http://localhost:4000/v1/movies/${id}`);
 
       if (response.status !== 200) {
         let err = 'Invalid response code: ' + response.status;
@@ -27,9 +30,35 @@ export default function Movies() {
     }
   }, []);
 
+  const fetchGenreData = useCallback(async () => {
+    try {
+      const response = await fetch(`http://localhost:4000/v1/genre/${id}`);
+
+      if (response.status !== 200) {
+        let err = 'Invalid response code: ' + response.status;
+        setError({ message: err });
+        setIsLoaded(true);
+        return;
+      }
+
+      const json = await response.json();
+
+      setGenre(json.genre);
+      setIsLoaded(true);
+    } catch (err) {
+      setIsLoaded(true);
+      setError(err);
+    }
+  }, []);
+
   useEffect(() => {
     fetchData();
+    fetchGenreData();
   }, []);
+
+  if (!movies) {
+    setMovies([]);
+  }
 
   if (error) {
     return <p>Error: {error.message}</p>;
@@ -41,14 +70,14 @@ export default function Movies() {
 
   return (
     <>
-      <h2>Choose a movie</h2>
+      <h2>Genre: {genre.genre_name} </h2>
 
       <div className="list-group">
         {movies.map((movie) => (
           <Link
             className="list-group-item list-group-item-action"
-            key={movie.id}
             to={`/movies/${movie.id}`}
+            key={movie.id}
           >
             {movie.title}
           </Link>

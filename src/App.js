@@ -1,16 +1,11 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useLocation,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Movies from './components/Movies';
 import Admin from './components/Admin';
 import Home from './components/Home';
-import Categories from './components/Categories';
+import Genres from './components/Genres';
 import OneMovie from './components/OneMovie';
+import OneGenre from './components/OneGenre';
 
 export default function App() {
   return (
@@ -31,7 +26,7 @@ export default function App() {
                   <Link to="/movies">Movies</Link>
                 </li>
                 <li className="list-group-item">
-                  <Link to="/by-category">Categories</Link>
+                  <Link to="/genres">Genres</Link>
                 </li>
                 <li className="list-group-item">
                   <Link to="/admin">Manage Catalog</Link>
@@ -43,17 +38,8 @@ export default function App() {
             <Routes>
               <Route path="/movies/:id" element={<OneMovie />} />
               <Route path="/movies" element={<Movies />} />
-              <Route exact path="/by-category" element={<CategoryPage />} />
-              <Route
-                exact
-                path="/by-category/comedy"
-                element={<Categories title="Comedy" />}
-              />
-              <Route
-                exact
-                path="/by-category/drama"
-                element={<Categories title="Drama" />}
-              />
+              <Route path="/genres/:id" element={<OneGenre />} />
+              <Route exact path="/genres" element={<Genres />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/" element={<Home />} />
             </Routes>
@@ -61,24 +47,5 @@ export default function App() {
         </div>
       </div>
     </Router>
-  );
-}
-
-function CategoryPage() {
-  let { pathname } = useLocation();
-
-  return (
-    <div>
-      <h2>Categories</h2>
-
-      <ul>
-        <li>
-          <Link to={`${pathname}/comedy`}>Comedy</Link>
-        </li>
-        <li>
-          <Link to={`${pathname}/drama`}>Drama</Link>
-        </li>
-      </ul>
-    </div>
   );
 }

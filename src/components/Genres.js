@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Movies() {
-  const [movies, setMovies] = useState([]);
+export default function Genres() {
+  const [genres, setGenres] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:4000/v1/movies');
+      const response = await fetch('http://localhost:4000/v1/genres');
 
       if (response.status !== 200) {
         let err = 'Invalid response code: ' + response.status;
@@ -19,7 +19,7 @@ export default function Movies() {
 
       const json = await response.json();
 
-      setMovies(json.movies);
+      setGenres(json.genres);
       setIsLoaded(true);
     } catch (err) {
       setIsLoaded(true);
@@ -41,16 +41,16 @@ export default function Movies() {
 
   return (
     <>
-      <h2>Choose a movie</h2>
+      <h2>Genres</h2>
 
       <div className="list-group">
-        {movies.map((movie) => (
+        {genres.map((m) => (
           <Link
+            key={m.id}
             className="list-group-item list-group-item-action"
-            key={movie.id}
-            to={`/movies/${movie.id}`}
+            to={`/genres/${m.id}`}
           >
-            {movie.title}
+            {m.genre_name}
           </Link>
         ))}
       </div>
