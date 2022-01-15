@@ -27,11 +27,11 @@ export default function OneMovie() {
       setIsLoaded(true);
       setError(err);
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   if (movie.genres) {
     movie.genres = Object.values(movie.genres);
@@ -41,7 +41,9 @@ export default function OneMovie() {
 
   if (error) {
     return <p>Error: {error.message}</p>;
-  } else if (!isLoaded) {
+  }
+
+  if (!isLoaded) {
     return <p>Loading</p>;
   }
 

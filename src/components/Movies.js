@@ -29,7 +29,7 @@ export default function Movies() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   if (error) {
     return <p>Error: {error.message}</p>;

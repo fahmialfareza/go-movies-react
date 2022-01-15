@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 export default function OneGenre() {
   const { id } = useParams();
@@ -28,7 +28,7 @@ export default function OneGenre() {
       setIsLoaded(true);
       setError(err);
     }
-  }, []);
+  }, [id]);
 
   const fetchGenreData = useCallback(async () => {
     try {
@@ -49,12 +49,12 @@ export default function OneGenre() {
       setIsLoaded(true);
       setError(err);
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     fetchData();
     fetchGenreData();
-  }, []);
+  }, [fetchData, fetchGenreData]);
 
   if (!movies) {
     setMovies([]);
