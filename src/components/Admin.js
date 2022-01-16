@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-export default function Admin() {
+export default function Admin({ jwt }) {
+  const navigate = useNavigate();
+
   const [movies, setMovies] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
@@ -28,8 +30,21 @@ export default function Admin() {
   }, []);
 
   useEffect(() => {
+    if (jwt === '') {
+      navigate('/login');
+      return;
+    }
+
     fetchData();
-  }, [fetchData]);
+  }, [fetchData, navigate, jwt]);
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
+  if (!isLoaded) {
+    return <p>Loading</p>;
+  }
 
   return (
     <div className="list-group">

@@ -10,7 +10,7 @@ import Select from './form-components/Select';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-export default function EditMovie() {
+export default function EditMovie({ jwt }) {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -68,8 +68,13 @@ export default function EditMovie() {
   }, [id]);
 
   useEffect(() => {
+    if (jwt === '') {
+      navigate('/login');
+      return;
+    }
+
     fetchData();
-  }, [fetchData]);
+  }, [fetchData, jwt, navigate]);
 
   const handleSubmit = async (event) => {
     try {
@@ -87,10 +92,14 @@ export default function EditMovie() {
       let data = new FormData(event.target);
       data.append('id', movie.id);
       const payload = Object.fromEntries(data.entries());
+      const myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+      myHeaders.append('Authorization', `Bearer ${jwt}`);
 
       const requestOptions = {
         method: 'POST',
         body: JSON.stringify(payload),
+        headers: myHeaders,
       };
 
       const response = await fetch(
@@ -127,9 +136,13 @@ export default function EditMovie() {
         {
           label: 'Yes',
           onClick: async () => {
+            const myHeaders = new Headers();
+            myHeaders.append('Content-Type', 'application/json');
+            myHeaders.append('Authorization', `Bearer ${jwt}`);
+
             const response = await fetch(
               `http://localhost:4000/v1/admin/deletemovie/${movie.id}`,
-              { method: 'GET' }
+              { method: 'DELETE', headers: myHeaders }
             );
             const data = await response.json();
 
