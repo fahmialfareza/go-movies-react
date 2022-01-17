@@ -58,7 +58,6 @@ export default function Login({ handleJWTChange }) {
     if (data.error) {
       toast.error(data.error.message);
     } else {
-      console.log(data);
       handleJWTChange(data.response);
       window.localStorage.setItem('jwt', data.response);
       navigate('/admin');

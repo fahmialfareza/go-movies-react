@@ -8,6 +8,8 @@ import OneMovie from './components/OneMovie';
 import OneGenre from './components/OneGenre';
 import EditMovie from './components/EditMovie';
 import Login from './components/Login';
+import GraphQL from './components/GraphQL';
+import OneMovieGraphQL from './components/OneMovieGraphQL';
 
 export default function App(props) {
   const [jwt, setJwt] = useState('');
@@ -75,12 +77,16 @@ export default function App(props) {
                     </li>
                   </>
                 )}
+                <li className="list-group-item">
+                  <Link to="/graphql">GraphQL</Link>
+                </li>
               </ul>
             </nav>
           </div>
           <div className="col-md-10">
             <Routes>
               <Route path="/movies/:id" element={<OneMovie />} />
+              <Route path="/moviesgraphql/:id" element={<OneMovieGraphQL />} />
               <Route path="/movies" element={<Movies />} />
               <Route path="/genres/:id" element={<OneGenre />} />
               <Route
@@ -89,6 +95,7 @@ export default function App(props) {
                 element={<Login {...props} handleJWTChange={handleJWTChange} />}
               />
               <Route exact path="/genres" element={<Genres />} />
+              <Route exact path="/graphql" element={<GraphQL />} />
               <Route
                 path="/admin/movies/:id"
                 element={<EditMovie {...props} jwt={jwt} />}
