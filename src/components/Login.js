@@ -50,7 +50,7 @@ export default function Login({ handleJWTChange }) {
     };
 
     const response = await fetch(
-      'http://localhost:4000/v1/signin',
+      `${process.env.REACT_APP_API_URL}/v1/signin`,
       requestOptions
     );
     data = await response.json();

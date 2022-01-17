@@ -30,7 +30,7 @@ export default function GraphQL() {
       };
 
       const response = await fetch(
-        'http://localhost:4000/v1/graphql',
+        `${process.env.REACT_APP_API_URL}/v1/graphql`,
         requestOptions
       );
       const data = await response.json();
@@ -77,7 +77,7 @@ export default function GraphQL() {
       };
 
       const response = await fetch(
-        'http://localhost:4000/v1/graphql',
+        `${process.env.REACT_APP_API_URL}/v1/graphql`,
         requestOptions
       );
       const data = await response.json();
